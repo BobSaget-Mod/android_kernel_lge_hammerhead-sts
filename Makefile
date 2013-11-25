@@ -357,7 +357,7 @@ MODFLAGS        = -DMODULE \
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
 LDFLAGS_MODULE  = -T $(srctree)/scripts/module-common.lds
-CFLAGS_KERNEL        = -march=armv7-a \
+CFLAGS_KERNEL   = -march=armv7-a \
                   -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O2
