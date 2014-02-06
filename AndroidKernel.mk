@@ -69,7 +69,7 @@ $(KERNEL_OUT)/piggy : $(TARGET_PREBUILT_INT_KERNEL)
 
 $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_OUT) $(KERNEL_CONFIG) $(KERNEL_HEADERS_INSTALL)
 	$(MAKE) -C kernel/lge/hammerhead O=../../../$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi-
-	bzip2 $(KERNEL_OUT)/vmlinux
+	bzip2 -f $(KERNEL_OUT)/vmlinux
 
 $(KERNEL_HEADERS_INSTALL): $(KERNEL_OUT) $(KERNEL_CONFIG)
 	$(MAKE) -C kernel/lge/hammerhead O=../../../$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- headers_install
