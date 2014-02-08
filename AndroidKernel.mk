@@ -26,11 +26,9 @@ KERNEL_OUT := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
 KERNEL_CONFIG := $(KERNEL_OUT)/.config
 TARGET_PREBUILT_INT_KERNEL := $(KERNEL_OUT)/arch/arm/boot/zImage-dtb
 KERNEL_HEADERS_INSTALL := $(KERNEL_OUT)/usr
+KERNEL_MODULES_INSTALL := system
+KERNEL_MODULES_OUT := $(TARGET_OUT)/lib/modules
 KERNEL_IMG := $(KERNEL_OUT)/arch/arm/boot/Image
-
-#Set gcc version here
-GCC_VERSION := 4.8
-ARM_EABI_TOOLCHAIN := prebuilts/gcc/linux-x86/arm/arm-eabi-$(GCC_VERSION)
 
 ifeq ($(TARGET_USES_UNCOMPRESSED_KERNEL),true)
 $(info Using uncompressed kernel)
@@ -55,8 +53,6 @@ mpath=`dirname $$mdpath`; rm -rf $$mpath;\
 fi
 endef
 
-$(ARM_EABI_TOOLCHAIN):
-	export PATH=$PATH:$ARM_EABI_TOOLCHAIN/bin:$ARM_EABI_TOOLCHAIN/arm-eabi/bin
 
 $(KERNEL_OUT):
 	mkdir -p $(KERNEL_OUT)
@@ -68,7 +64,11 @@ $(KERNEL_OUT)/piggy : $(TARGET_PREBUILT_INT_KERNEL)
 	$(hide) gunzip -c $(KERNEL_OUT)/arch/arm/boot/compressed/piggy.gzip > $(KERNEL_OUT)/piggy
 
 $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_OUT) $(KERNEL_CONFIG) $(KERNEL_HEADERS_INSTALL)
-	$(MAKE) -C kernel/lge/hammerhead O=../../../$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi-
+	$(MAKE) -C kernel O=../$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi-
+	$(MAKE) -C kernel O=../$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- modules
+	$(MAKE) -C kernel O=../$(KERNEL_OUT) INSTALL_MOD_PATH=../../$(KERNEL_MODULES_INSTALL) INSTALL_MOD_STRIP=1 ARCH=arm CROSS_COMPILE=arm-eabi- modules_install
+	$(mv-modules)
+	$(clean-module-folder)
 	bzip2 -f $(KERNEL_OUT)/vmlinux
 
 $(KERNEL_HEADERS_INSTALL): $(KERNEL_OUT) $(KERNEL_CONFIG)
