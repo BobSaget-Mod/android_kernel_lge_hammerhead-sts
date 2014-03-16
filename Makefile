@@ -353,8 +353,7 @@ MODFLAGS        = -DMODULE \
                   -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O3 \
-                  -fgcse-las \
-                  -fpredictive-commoning
+                  -fgcse-las
 
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
