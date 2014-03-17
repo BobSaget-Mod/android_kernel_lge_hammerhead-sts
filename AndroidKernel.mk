@@ -18,6 +18,14 @@
 # This file includes all definitions that apply to ALL hammerhead devices, and
 # are also specific to hammerhead devices
 
+# Custom toolchain building
+GCC_VERSION_ARM := 4.9
+
+# GCC Colors only works on gcc 4.9.x
+ifeq ($(GCC_VERSION_ARM),4.9)
+GCC_COLORS := 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+endif
+
 PERL		= perl
 
 ifeq ($(TARGET_PREBUILT_KERNEL),)
