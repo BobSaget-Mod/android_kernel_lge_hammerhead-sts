@@ -19,11 +19,16 @@
 # are also specific to hammerhead devices
 
 # Custom toolchain building
+# By enabling this feature you can agree that you are a PSD android member or your using your own 4.9 toolchain
+# You can also define GCC_VERSION_ARM in BoardConfig.mk or BoardConfigCommon.mk of your device tree
+# To you don't know how to enable it ask team.aospal@gmail.com
+ifeq ($(PSD_MEMBER),true)
 GCC_VERSION_ARM := 4.9
+endif
 
 # GCC Colors only works on gcc 4.9.x
 ifeq ($(GCC_VERSION_ARM),4.9)
-GCC_COLORS := 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
+export GCC_COLORS := 'error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
 endif
 
 PERL		= perl
