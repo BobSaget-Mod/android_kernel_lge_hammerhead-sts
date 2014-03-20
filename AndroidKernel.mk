@@ -19,9 +19,9 @@
 # are also specific to hammerhead devices
 
 # Custom toolchain building
-# By enabling this feature you can agree that you are a PSD android member or your using your own 4.9 toolchain
+# By enabling this feature you can agree that you are a PSD android member or you are using your own 4.9 toolchain
 # You can also define GCC_VERSION_ARM in BoardConfig.mk or BoardConfigCommon.mk of your device tree
-# To you don't know how to enable it ask team.aospal@gmail.com
+# If you don't know how to enable it, send an email to team.aospal@gmail.com
 
 PERL		= perl
 
