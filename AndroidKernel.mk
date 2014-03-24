@@ -58,6 +58,27 @@ mpath=`dirname $$mdpath`; rm -rf $$mpath;\
 fi
 endef
 
+ifeq ($(KERNEL_USES_DTB),y)
+DTS_NAME ?= $(MSM_ARCH)
+DTS_FILES = $(wildcard $(TOP)/kernel/lge/hammerhead/arch/arm/boot/dts/$(DTS_NAME)*.dts)
+DTS_FILE = $(lastword $(subst /, ,$(1)))
+DTB_FILE = $(addprefix $(KERNEL_OUT)/arch/arm/boot/,$(patsubst %.dts,%.dtb,$(call DTS_FILE,$(1))))
+ZIMG_FILE = $(addprefix $(KERNEL_OUT)/arch/arm/boot/,$(patsubst %.dts,%-zImage-dtb,$(call DTS_FILE,$(1))))
+KERNEL_ZIMG = $(KERNEL_OUT)/arch/arm/boot/zImage-dtb
+DTC = $(KERNEL_OUT)/scripts/dtc/dtc
+
+define append-dtb
+mkdir -p $(KERNEL_OUT)/arch/arm/boot;\
+$(foreach d, $(DTS_FILES), \
+   $(DTC) -p 1024 -O dtb -o $(call DTB_FILE,$(d)) $(d); \
+   cat $(KERNEL_ZIMG) $(call DTB_FILE,$(d)) > $(call ZIMG_FILE,$(d));)
+endef
+else
+
+define append-dtb
+endef
+endif
+
 
 $(KERNEL_OUT):
 	mkdir -p $(KERNEL_OUT)
@@ -69,11 +90,12 @@ $(KERNEL_OUT)/piggy : $(TARGET_PREBUILT_INT_KERNEL)
 	$(hide) gunzip -c $(KERNEL_OUT)/arch/arm/boot/compressed/piggy.gzip > $(KERNEL_OUT)/piggy
 
 $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_OUT) $(KERNEL_CONFIG) $(KERNEL_HEADERS_INSTALL)
-	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi-
+	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- zImage-dtb
 	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- modules
 	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) INSTALL_MOD_PATH=../../$(KERNEL_MODULES_INSTALL) INSTALL_MOD_STRIP=1 ARCH=arm CROSS_COMPILE=arm-eabi- modules_install
 	$(mv-modules)
 	$(clean-module-folder)
+	$(append-dtb)
 	bzip2 -f $(KERNEL_OUT)/vmlinux
 
 $(KERNEL_HEADERS_INSTALL): $(KERNEL_OUT) $(KERNEL_CONFIG)
