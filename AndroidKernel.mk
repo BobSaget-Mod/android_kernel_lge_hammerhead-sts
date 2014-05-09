@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2013 The Android Open-Source Project
-# Copyright (C) 2014 The AOSPAL Project
+# Copyright (C) 2014 The SaberMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -17,11 +17,6 @@
 
 # This file includes all definitions that apply to ALL hammerhead devices, and
 # are also specific to hammerhead devices
-
-# Custom toolchain building
-# By enabling this feature you can agree that you are a PSD android member or you are using your own 4.9 toolchain
-# You can also define GCC_VERSION_ARM in BoardConfig.mk or BoardConfigCommon.mk of your device tree
-# If you don't know how to enable it, send an email to team.aospal@gmail.com
 
 PERL		= perl
 
@@ -96,11 +91,6 @@ $(KERNEL_OUT)/piggy : $(TARGET_PREBUILT_INT_KERNEL)
 
 $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_OUT) $(KERNEL_CONFIG) $(KERNEL_HEADERS_INSTALL)
 	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- zImage-dtb
-	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- modules
-	$(MAKE) -C kernel/lge/hammerhead O=$(KERNEL_OUT) INSTALL_MOD_PATH=../../$(KERNEL_MODULES_INSTALL) INSTALL_MOD_STRIP=1 ARCH=arm CROSS_COMPILE=arm-eabi- modules_install
-	$(mv-modules)
-	$(clean-module-folder)
-	$(append-dtb)
 	bzip2 -f $(KERNEL_OUT)/vmlinux
 
 $(KERNEL_HEADERS_INSTALL): $(KERNEL_OUT) $(KERNEL_CONFIG)
