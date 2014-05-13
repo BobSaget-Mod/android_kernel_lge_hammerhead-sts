@@ -1,6 +1,6 @@
 VERSION = 3
 PATCHLEVEL = 4
-SUBLEVEL = 85
+SUBLEVEL = 90
 EXTRAVERSION =
 NAME = Saber-toothed Squirrel
 
@@ -363,7 +363,8 @@ CFLAGS_KERNEL   = -march=armv7-a \
                   -mtune=cortex-a15 \
                   -O2 \
                   -fgcse-las \
-                  -fpredictive-commoning
+                  -fpredictive-commoning \
+		  -Wno-error=implicit-function-declaration
 ifeq ($(ENABLE_GRAPHITE),true)
 CFLAGS_KERNEL	+= -fgraphite -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 endif
