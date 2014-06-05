@@ -336,13 +336,9 @@ AS		= $(CROSS_COMPILE)as
 LD		= $(CROSS_COMPILE)ld
 CC		= $(CROSS_COMPILE)gcc
 CPP		= $(CC) -E
-# Check to see if the kernel is being built inline with saber host toolchains for graphite flags for CC/CPP
-# This get's passed to the host since we use $(CROSS_COMPILE)gcc
-ifeq ($(USING_SABER_LINUX),yes)
 ifeq ($(ENABLE_GRAPHITE),true)
 	CC += -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 	CPP += -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
-endif
 endif
 AR		= $(CROSS_COMPILE)ar
 NM		= $(CROSS_COMPILE)nm
