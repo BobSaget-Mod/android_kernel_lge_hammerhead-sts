@@ -361,7 +361,8 @@ MODFLAGS        = -DMODULE \
                   -mfpu=neon-vfpv4 \
                   -mtune=cortex-a15 \
                   -O3 \
-                  -fgcse-las
+                  -fgcse-las \
+                  -Wno-error=implicit-function-declaration
 
 CFLAGS_MODULE   = $(MODFLAGS)
 AFLAGS_MODULE   = $(MODFLAGS)
@@ -376,6 +377,9 @@ CFLAGS_KERNEL   = -march=armv7-a \
 ifeq ($(ENABLE_GRAPHITE),true)
 CFLAGS_KERNEL	+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
 endif
+
+
+
 AFLAGS_KERNEL	=
 CFLAGS_GCOV	= -fprofile-arcs -ftest-coverage
 
