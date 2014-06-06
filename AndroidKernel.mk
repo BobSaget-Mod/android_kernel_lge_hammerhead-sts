@@ -1,6 +1,6 @@
 #
 # Copyright (C) 2013 The Android Open-Source Project
-# Copyright (C) 2014 The SaberMod Project
+# Copyright (C) 2014 The AOSPAL Paranoid SaberDroid
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -94,6 +94,10 @@ else
 $(TARGET_PREBUILT_INT_KERNEL): kernelconfig $(KERNEL_HEADERS_INSTALL)
 endif
 	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- zImage-dtb
+	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- modules
+	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_OUT) INSTALL_MOD_PATH=../../$(KERNEL_MODULES_INSTALL) INSTALL_MOD_STRIP=1 ARCH=arm CROSS_COMPILE=arm-eabi- modules_install
+	$(mv-modules)
+	$(clean-module-folder)
 	bzip2 -f $(KERNEL_OUT)/vmlinux
 
 $(KERNEL_HEADERS_INSTALL): $(KERNEL_OUT) $(KERNEL_CONFIG)
