@@ -79,9 +79,6 @@ define append-dtb
 endef
 endif
 
-# Try to parallelize the build for faster performance.
-JOBS := -j$(shell cat /proc/cpuinfo | grep -c processor)
-
 $(KERNEL_OUT):
 	mkdir -p $(KERNEL_OUT)
 
@@ -96,7 +93,7 @@ $(TARGET_PREBUILT_INT_KERNEL): $(KERNEL_OUT) $(KERNEL_CONFIG) $(KERNEL_HEADERS_I
 else
 $(TARGET_PREBUILT_INT_KERNEL): kernelconfig $(KERNEL_HEADERS_INSTALL)
 endif
-	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_OUT) $(JOBS) ARCH=arm CROSS_COMPILE=arm-eabi- zImage-dtb
+	$(MAKE) -C $(KERNEL_DIR) O=$(KERNEL_OUT) ARCH=arm CROSS_COMPILE=arm-eabi- zImage-dtb
 	bzip2 -f $(KERNEL_OUT)/vmlinux
 
 $(KERNEL_HEADERS_INSTALL): $(KERNEL_OUT) $(KERNEL_CONFIG)
