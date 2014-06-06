@@ -1705,10 +1705,12 @@ CONFIG_SERIAL_MSM_HSL_CONSOLE=y
 #
 # Diag Support
 #
+CONFIG_DIAG_CHAR=m
 
 #
 # DIAG traffic over USB
 #
+CONFIG_DIAG_OVER_USB=y
 
 #
 # SDIO support for DIAG
