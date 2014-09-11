@@ -375,9 +375,9 @@ CFLAGS_KERNEL   = -march=armv7-a \
                   -fpredictive-commoning \
 		  -Wno-error=implicit-function-declaration
 ifeq ($(ENABLE_GRAPHITE),true)
-CFLAGS_KERNEL	+= -fgraphite -floop-flatten -floop-parallelize-all -ftree-loop-linear -floop-interchange -floop-strip-mine -floop-block
+CFLAGS_KERNEL	+= $(GRAPHITE_FLAGS) 
+CFLAGS_MODULE	+= $(GRAPHITE_FLAGS)
 endif
-
 
 
 AFLAGS_KERNEL	=
